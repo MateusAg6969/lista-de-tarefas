@@ -6,12 +6,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Seleciona o botão de troca de tema
     const themeSwitcherBtn = document.getElementById('themeSwitcherBtn');
     // Lista dos temas disponíveis
-    const themes = ['light-theme', 'dark-theme', 'daltonic-theme'];
+    const themes = ['light-theme', 'dark-theme', 'daltonic-theme', 'pink-mode'];
     // Ícones para cada tema (usados no botão)
     const themeIcons = {
         'light-theme': '', // Ícone para tema claro
         'dark-theme': '',  // Ícone para tema escuro
-        'daltonic-theme': '☀'   // Ícone para tema daltônico
+        'daltonic-theme': '☀',   // Ícone para tema daltônico
+        'pink-mode':'(|)', //modo rosa
     };
     // Índice do tema atual
     let currentThemeIndex = 0;

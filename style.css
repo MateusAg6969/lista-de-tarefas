@@ -51,6 +51,24 @@ body.daltonic-theme {
     --shadow-color: rgba(255, 140, 0, 0.3);
 }
 
+body.pink-theme {
+    --bg-color: rgb(255, 0, 191);
+    --text-color: #ffffff;
+    --container-bg: #6e076e;
+    --task-bg: #44093c;
+    --input-bg: #8d197e;
+    --accent-color: #ae00ff; /* Laranja forte */
+    --accent-hover-color: #ff00dd;
+    --accent-text-color: #df1dd5;
+    --completed-bg: #ac1da0; /* Fundo não muda */
+    --completed-text-color: #9c4377;
+    --button-text-color: #dddddd;
+    --button-hover-color: var(--accent-color);
+    --delete-hover-color: #000000;
+    --shadow-color: rgba(143, 26, 167, 0.3);
+}
+
+
 /* --- ESTILOS GERAIS USANDO AS VARIÁVEIS --- */
 
 body {
@@ -149,10 +167,9 @@ h1 {
     margin: 0;
     max-height: 50vh;
     overflow-y: auto;
-}
 
-#taskList li {
-    background: var(--task-bg);
+    #taskList li {
+        background: var(--task-bg);
     margin-bottom: 10px;
     padding: 12px 16px;
     border-radius: 8px;
@@ -236,4 +253,4 @@ h1 {
 */
 .task-buttons .delete-btn:hover {
     color: var(--delete-hover-color);
-}
+}}
