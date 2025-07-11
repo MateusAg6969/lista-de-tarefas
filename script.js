@@ -1,116 +1,138 @@
-
-// Aguarda o DOM ser completamente carregado para garantir que todos os elementos HTML estejam disponíveis.
+// Espera o conteúdo da página carregar completamente antes de executar o código
 document.addEventListener('DOMContentLoaded', () => {
-    // Seleciona os elementos principais da interface: o campo de input, o botão de adicionar e a lista de tarefas.
+    
+    // --- LÓGICA DE TEMAS ---
+
+    // Seleciona o botão de troca de tema
+    const themeSwitcherBtn = document.getElementById('themeSwitcherBtn');
+    // Lista dos temas disponíveis
+    const themes = ['light-theme', 'dark-theme', 'daltonic-theme'];
+    // Ícones para cada tema (usados no botão)
+    const themeIcons = {
+        'light-theme': '', // Ícone para tema claro
+        'dark-theme': '',  // Ícone para tema escuro
+        'daltonic-theme': '☀'   // Ícone para tema daltônico
+    };
+    // Índice do tema atual
+    let currentThemeIndex = 0;
+
+    // Função que aplica o tema selecionado ao body e salva no localStorage
+    function applyTheme(themeName) {
+        document.body.className = ''; // Remove classes antigas
+        document.body.classList.add(themeName); // Adiciona a nova classe de tema
+        themeSwitcherBtn.innerHTML = themeIcons[themeName]; // Atualiza o ícone do botão
+        localStorage.setItem('theme', themeName); // Salva o tema escolhido
+    }
+    
+    // Ao clicar no botão, alterna para o próximo tema da lista
+    themeSwitcherBtn.addEventListener('click', () => {
+        currentThemeIndex = (currentThemeIndex + 1) % themes.length; // Avança para o próximo tema
+        const newTheme = themes[currentThemeIndex];
+        applyTheme(newTheme); // Aplica o novo tema
+    });
+    
+    // Ao carregar, verifica se há um tema salvo, senão usa o claro
+    const savedTheme = localStorage.getItem('theme') || 'light-theme';
+    currentThemeIndex = themes.indexOf(savedTheme);
+    if (currentThemeIndex === -1) {
+        currentThemeIndex = 0; // Garante que o índice é válido
+    }
+    applyTheme(themes[currentThemeIndex]); // Aplica o tema inicial
+
+
+    // --- LÓGICA DA LISTA DE TAREFAS ---
+
+    // Seleciona os elementos principais da lista de tarefas
     const taskInput = document.getElementById('taskInput');
     const addTaskBtn = document.getElementById('addTaskBtn');
     const taskList = document.getElementById('taskList');
 
-    // Função para salvar todas as tarefas atuais no localStorage.
+    // Função que salva todas as tarefas no localStorage
     function saveTasks() {
         const tasks = [];
-        // Itera sobre cada item 'li' na lista de tarefas.
+        // Para cada <li> da lista, salva o texto e se está concluída
         taskList.querySelectorAll('li').forEach(li => {
-            // Coleta o texto da tarefa e seu estado de conclusão.
             tasks.push({
                 text: li.querySelector('span').textContent,
                 completed: li.classList.contains('completed')
             });
         });
-        // Converte o array de tarefas para uma string JSON e armazena no localStorage.
-        localStorage.setItem('tasks', JSON.stringify(tasks));
+        localStorage.setItem('tasks', JSON.stringify(tasks)); // Salva como JSON
     }
 
-    // Função para carregar tarefas do localStorage quando a página é aberta.
+    // Função que carrega as tarefas do localStorage e as adiciona na lista
     function loadTasks() {
-        // Obtém as tarefas salvas do localStorage; se não houver, usa um array vazio.
         const tasks = JSON.parse(localStorage.getItem('tasks')) || [];
-        // Para cada tarefa carregada, chama a função addTask para recriá-la na lista.
         tasks.forEach(task => addTask(task.text, task.completed));
     }
 
-    // Função para adicionar uma nova tarefa à lista.
-    // Aceita o texto da tarefa e um booleano opcional para o estado de concluída.
+    // Função para adicionar uma nova tarefa à lista
+    // Se 'text' não for passado, pega do input
+    // 'completed' indica se a tarefa já está concluída
     function addTask(text, completed = false) {
-        // Usa o texto fornecido ou pega o valor do campo de input. Remove espaços em branco extras.
         const taskText = (text !== undefined ? text : taskInput.value).trim();
-        // Se não houver texto, a função não faz nada.
-        if (!taskText) return;
+        if (!taskText) return; // Não adiciona tarefas vazias
 
-        // Cria um novo elemento de lista 'li'.
+        // Cria o elemento <li> da tarefa
         const li = document.createElement('li');
-        // Adiciona a classe 'completed' se a tarefa já estiver concluída (ao carregar).
         if (completed) {
-            li.classList.add('completed');
+            li.classList.add('completed'); // Marca como concluída se necessário
         }
 
-        // Define o HTML interno do 'li' com o texto da tarefa e os botões de ação.
+        // Define o HTML interno do <li> (texto e botões)
         li.innerHTML = `
             <span>${taskText}</span>
             <div class="task-buttons">
-                <button class="complete-btn" title="Concluir">&#10003;</button>
-                <button class="repeat-btn" title="Repetir">&#8635;</button>
-                <button class="delete-btn" title="Excluir">&#10005;</button>
+                <button class="complete-btn" title="Concluir">✓</button>
+                <button class="repeat-btn" title="Repetir">↻</button>
+                <button class="delete-btn" title="Excluir">✕</button>
             </div>
         `;
-        // Adiciona o novo 'li' à lista de tarefas 'ul'.
-        taskList.appendChild(li);
+        taskList.appendChild(li); // Adiciona o <li> na lista
         
-        // Se a tarefa foi adicionada pelo usuário (não carregada do storage), limpa o input.
+        // Limpa o campo de input se a tarefa foi digitada manualmente
         if (text === undefined) {
             taskInput.value = '';
         }
         
-        // Salva o estado atual da lista no localStorage sempre que uma tarefa é adicionada.
-        saveTasks();
+        saveTasks(); // Salva o estado atualizado
     }
 
-    /* --- EVENT LISTENERS --- */
-
-    // Event listener para o clique no botão 'Adicionar'.
-    // Quando o botão é clicado, chama a função addTask para criar uma nova tarefa com o texto do input.
+    // Adiciona tarefa ao clicar no botão "+"
     addTaskBtn.addEventListener('click', () => addTask());
 
-    // Event listener para a tecla 'Enter' no campo de input.
-    // Quando 'Enter' é pressionado, também chama addTask, facilitando a adição de tarefas.
+    // Adiciona tarefa ao pressionar Enter no campo de input
     taskInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             addTask();
         }
     });
 
-    // Event listener único na lista de tarefas (ul) para gerenciar todas as ações dos botões.
-    // Isso é chamado de "delegação de eventos" e é mais eficiente do que adicionar um listener para cada botão.
+    // Delegação de eventos para os botões de ação das tarefas
+    // Permite lidar com clique em qualquer botão dentro da lista
     taskList.addEventListener('click', (e) => {
-        // Encontra o elemento 'li' pai mais próximo do elemento que foi clicado.
+        // Busca o <li> mais próximo do alvo do clique
         const li = e.target.closest('li');
-        // Se o clique não foi dentro de um 'li', não faz nada.
-        if (!li) return;
+        if (!li) return; // Se não clicou em um item da lista, ignora
 
-        // Se o botão 'Excluir' (com a classe 'delete-btn') foi clicado...
+        // Se clicou no botão de excluir, remove a tarefa
         if (e.target.classList.contains('delete-btn')) {
-            // Remove o elemento 'li' da lista.
             li.remove();
-            // Salva o novo estado da lista.
-            saveTasks();
-        // Se o botão 'Concluir' ou o próprio texto da tarefa (span) for clicado...
+        // Se clicou no botão de concluir ou no texto da tarefa, alterna o status de concluída
         } else if (e.target.classList.contains('complete-btn') || e.target.tagName === 'SPAN') {
-            // Alterna a classe 'completed', marcando ou desmarcando a tarefa como concluída.
             li.classList.toggle('completed');
-            // Salva o novo estado da lista.
-            saveTasks();
-        // Se o botão 'Repetir' (com a classe 'repeat-btn') foi clicado...
+        // Se clicou no botão de repetir, adiciona uma nova tarefa igual
         } else if (e.target.classList.contains('repeat-btn')) {
-            // Pega o texto da tarefa atual.
             const span = li.querySelector('span');
-            // Se o texto existir, chama addTask para criar uma nova tarefa duplicada.
             if (span) {
                 addTask(span.textContent);
-                // A chamada para saveTasks() já está dentro de addTask().
             }
         }
+        
+        // Após qualquer ação, salva o novo estado das tarefas
+        saveTasks();
     });
 
-    // Carrega as tarefas salvas no localStorage assim que a página é iniciada.
+    // Ao carregar a página, carrega as tarefas salvas anteriormente
     loadTasks();
 });

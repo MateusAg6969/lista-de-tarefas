@@ -1,24 +1,110 @@
+/* --- DEFINIÇÃO DOS TEMAS COM VARIÁVEIS --- */
+
+body.light-theme {
+    --bg-color: #f0f2f5;
+    --text-color: #1c1e21;
+    --container-bg: #ffffff;
+    --task-bg: #e9ebee;
+    --input-bg: #e9ebee;
+    --accent-color: #1877f2;
+    --accent-hover-color: #166fe5;
+    --accent-text-color: #ffffff;
+    --completed-bg: #e2f0d9;
+    --completed-text-color: #7f7f7f;
+    --button-text-color: #606770;
+    --button-hover-color: var(--accent-color);
+    --delete-hover-color: #fa3e3e;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+body.dark-theme {
+    --bg-color: #121212;
+    --text-color: #e0e0e0;
+    --container-bg: #1e1e1e;
+    --task-bg: #232323;
+    --input-bg: #232323;
+    --accent-color: #03dac6;
+    --accent-hover-color: #00bfae;
+    --accent-text-color: #121212;
+    --completed-bg: #2c3e50;
+    --completed-text-color: #b0b0b0;
+    --button-text-color: #b0b0b0;
+    --button-hover-color: var(--accent-color);
+    --delete-hover-color: #cf6679;
+    --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+body.daltonic-theme {
+    --bg-color: #000000;
+    --text-color: #ffffff;
+    --container-bg: #111111;
+    --task-bg: #222222;
+    --input-bg: #222222;
+    --accent-color: #ff8c00; /* Laranja forte */
+    --accent-hover-color: #ffa500;
+    --accent-text-color: #000000;
+    --completed-bg: #222222; /* Fundo não muda */
+    --completed-text-color: #999999;
+    --button-text-color: #dddddd;
+    --button-hover-color: var(--accent-color);
+    --delete-hover-color: #ff4500;
+    --shadow-color: rgba(255, 140, 0, 0.3);
+}
+
+/* --- ESTILOS GERAIS USANDO AS VARIÁVEIS --- */
+
 body {
-    background-color: #121212;
-    color: #e0e0e0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    transition: background-color 0.3s, color 0.3s;
 }
 
-/* Estilize a classe .container. */
 .container {
-    background: #1e1e1e;
+    background: var(--container-bg);
     padding: 32px 24px;
     border-radius: 16px;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
-    max-width: 400px;
-    width: 100%;
+    box-shadow: 0 4px 24px var(--shadow-color);
+    max-width: 450px;
+    width: 90%;
+    transition: background-color 0.3s;
 }
 
-/* Estilize a área de input (.input-container), o campo de texto (#taskInput) e o botão (#addTaskBtn). */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+h1 {
+    margin: 0;
+    font-size: 28px;
+}
+
+#themeSwitcherBtn {
+    background: none;
+    border: 2px solid var(--button-text-color);
+    color: var(--button-text-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+#themeSwitcherBtn:hover {
+    color: var(--accent-color);
+    border-color: var(--accent-color);
+    transform: rotate(360deg);
+}
+
 .input-container {
     display: flex;
     gap: 8px;
@@ -27,64 +113,127 @@ body {
 
 #taskInput {
     flex: 1;
-    padding: 10px;
-    border: none;
+    padding: 12px;
+    border: 1px solid transparent;
     border-radius: 8px;
-    background: #232323;
-    color: #e0e0e0;
+    background: var(--input-bg);
+    color: var(--text-color);
     font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+#taskInput:focus {
+    outline: none;
+    border-color: var(--accent-color);
 }
 
 #addTaskBtn {
-    background: #03dac6;
-    color: #121212;
+    background: var(--accent-color);
+    color: var(--accent-text-color);
     border: none;
     border-radius: 8px;
-    padding: 0 16px;
-    font-size: 20px;
+    padding: 0 18px;
+    font-size: 24px;
+    font-weight: bold;
     cursor: pointer;
     transition: background 0.2s;
 }
 
 #addTaskBtn:hover {
-    background: #00bfae;
+    background: var(--accent-hover-color);
 }
 
-/* Estilize a lista de tarefas (ul) e seus itens (li). */
 #taskList {
     list-style: none;
     padding: 0;
     margin: 0;
+    max-height: 50vh;
+    overflow-y: auto;
 }
 
 #taskList li {
-    background: #232323;
+    background: var(--task-bg);
     margin-bottom: 10px;
     padding: 12px 16px;
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: background 0.2s;
+    transition: background 0.2s, opacity 0.3s, border-left 0.3s;
+    word-break: break-word;
 }
 
-/* Crie uma classe .completed para tarefas concluídas. */
-.completed {
+#taskList li span {
+    cursor: pointer;
+    flex-grow: 1;
+    margin-right: 10px;
+}
+
+#taskList li.completed {
+    background: var(--completed-bg);
+    opacity: 0.7;
+}
+
+/* --- ESTILOS PARA ITENS CONCLUÍDOS E BOTÕES DE AÇÃO --- */
+
+/* 
+   Quando uma tarefa está concluída no modo daltônico, 
+   adiciona uma borda colorida à esquerda e aumenta a opacidade 
+   para facilitar a identificação visual.
+*/
+.daltonic-theme #taskList li.completed {
+    border-left: 4px solid var(--accent-color);
+    opacity: 0.8;
+}
+
+/* 
+   Quando uma tarefa está concluída, o texto recebe um risco (line-through)
+   e a cor muda para indicar que está finalizada.
+*/
+#taskList li.completed span {
     text-decoration: line-through;
-    color: #b0b0b0;
+    color: var(--completed-text-color);
 }
 
-/* Estilize os botões de ação dentro de cada tarefa (.task-buttons button). */
+/* 
+   Container dos botões de ação (concluir, repetir, excluir) de cada tarefa.
+   Usa flexbox para alinhar os botões lado a lado com espaçamento.
+*/
+.task-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* 
+   Estilo base para todos os botões de ação das tarefas:
+   - Sem fundo e sem borda
+   - Cor padrão definida pela variável do tema
+   - Cursor de ponteiro para indicar que é clicável
+   - Tamanho de fonte maior para facilitar o toque/click
+   - Transição suave na cor ao passar o mouse
+*/
 .task-buttons button {
     background: none;
     border: none;
-    color: #03dac6;
+    color: var(--button-text-color);
     cursor: pointer;
-    margin-left: 8px;
-    font-size: 16px;
+    font-size: 18px;
     transition: color 0.2s;
 }
 
+/* 
+   Ao passar o mouse sobre qualquer botão de ação, 
+   a cor muda para o destaque do tema.
+*/
 .task-buttons button:hover {
-    color: #ff9800;
+    color: var(--button-hover-color);
+}
+
+/* 
+   Especificamente para o botão de excluir (classe .delete-btn),
+   ao passar o mouse a cor muda para vermelho (ou cor de exclusão do tema),
+   indicando ação destrutiva.
+*/
+.task-buttons .delete-btn:hover {
+    color: var(--delete-hover-color);
 }

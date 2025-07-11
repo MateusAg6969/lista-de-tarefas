@@ -1,21 +1,35 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
+    <!-- Importa o arquivo de estilos CSS para aplicar o visual e temas -->
     <link rel="stylesheet" href="style.css">
     
     <meta charset="UTF-8">
+    <!-- Garante que o layout seja responsivo em dispositivos móveis -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Minha Lista de Tarefas</title>
 </head>
-<body>
+<!-- O JavaScript irá adicionar a classe do tema (ex: light-theme) diretamente na tag <body> -->
+<body> 
     <div class="container">
-        <h1>Minha Lista de Tarefas</h1>
+        <div class="header">
+            <!-- Título principal da aplicação -->
+            <h1>Minha Lista de Tarefas</h1>
+            <!-- Botão para alternar entre temas (claro, escuro, daltônico) -->
+            <button id="themeSwitcherBtn" title="Alterar Tema"></button>
+        </div>
+
         <div class="input-container">
+            <!-- Campo de texto para digitar uma nova tarefa -->
             <input type="text" id="taskInput" placeholder="Adicionar nova tarefa...">
+            <!-- Botão para adicionar a tarefa digitada -->
             <button id="addTaskBtn">+</button>
         </div>
+        <!-- Lista onde as tarefas serão exibidas dinamicamente -->
         <ul id="taskList"></ul>
     </div>
+    
+    <!-- Importa o script JavaScript que controla toda a lógica da aplicação -->
+    <script src="script.js" defer></script>
 </body>
-<script src="script.js" defer></script>
 </html>
