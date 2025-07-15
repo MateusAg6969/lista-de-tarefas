@@ -1,38 +1,38 @@
-// Espera o conteúdo da página carregar completamente antes de executar o código
+// Aguarda o carregamento completo do DOM para garantir que todos os elementos estejam disponíveis
 document.addEventListener('DOMContentLoaded', () => {
-    
+
     // --- LÓGICA DE TEMAS ---
 
-    // Seleciona o botão de troca de tema
+    // Seleciona o botão responsável por alternar os temas
     const themeSwitcherBtn = document.getElementById('themeSwitcherBtn');
-    // Lista dos temas disponíveis
-    const themes = ['light-theme', 'dark-theme', 'daltonic-theme', 'pink-mode'];
-    // Ícones para cada tema (usados no botão)
+    // Array com os nomes das classes de tema disponíveis
+    const themes = ['light-theme', 'dark-theme', 'daltonic-theme', 'pink-theme']; // Certo!
+    // Mapeamento de cada tema para um ícone correspondente (pode ser emoji ou caractere especial)
     const themeIcons = {
-        'light-theme': '', // Ícone para tema claro
-        'dark-theme': '',  // Ícone para tema escuro
-        'daltonic-theme': '☀',   // Ícone para tema daltônico
-        'pink-mode':'(|)', //modo rosa
+        'light-theme': '☀️',
+        'dark-theme': '🌙',
+        'daltonic-theme': '👀',
+        'pink-theme': '💮', // Certo!
     };
-    // Índice do tema atual
+    // Índice que indica qual tema está ativo no momento
     let currentThemeIndex = 0;
 
-    // Função que aplica o tema selecionado ao body e salva no localStorage
+    // Função que aplica o tema selecionado ao <body> e salva a escolha no localStorage
     function applyTheme(themeName) {
-        document.body.className = ''; // Remove classes antigas
-        document.body.classList.add(themeName); // Adiciona a nova classe de tema
+        document.body.className = ''; // Remove todas as classes antigas do body
+        document.body.classList.add(themeName); // Adiciona a classe do novo tema
         themeSwitcherBtn.innerHTML = themeIcons[themeName]; // Atualiza o ícone do botão
-        localStorage.setItem('theme', themeName); // Salva o tema escolhido
+        localStorage.setItem('theme', themeName); // Persiste a escolha do tema
     }
     
-    // Ao clicar no botão, alterna para o próximo tema da lista
+    // Evento de clique no botão de tema: alterna para o próximo tema do array
     themeSwitcherBtn.addEventListener('click', () => {
-        currentThemeIndex = (currentThemeIndex + 1) % themes.length; // Avança para o próximo tema
+        currentThemeIndex = (currentThemeIndex + 1) % themes.length; // Gira o índice circularmente
         const newTheme = themes[currentThemeIndex];
         applyTheme(newTheme); // Aplica o novo tema
     });
     
-    // Ao carregar, verifica se há um tema salvo, senão usa o claro
+    // Ao carregar, verifica se há um tema salvo no localStorage; se não, usa o tema claro
     const savedTheme = localStorage.getItem('theme') || 'light-theme';
     currentThemeIndex = themes.indexOf(savedTheme);
     if (currentThemeIndex === -1) {
@@ -40,15 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     applyTheme(themes[currentThemeIndex]); // Aplica o tema inicial
 
-
     // --- LÓGICA DA LISTA DE TAREFAS ---
 
-    // Seleciona os elementos principais da lista de tarefas
+    // Seleciona os elementos principais da interface de tarefas
     const taskInput = document.getElementById('taskInput');
     const addTaskBtn = document.getElementById('addTaskBtn');
     const taskList = document.getElementById('taskList');
 
-    // Função que salva todas as tarefas no localStorage
+    // Função que salva todas as tarefas atuais no localStorage
     function saveTasks() {
         const tasks = [];
         // Para cada <li> da lista, salva o texto e se está concluída

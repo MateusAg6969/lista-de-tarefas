@@ -57,10 +57,10 @@ body.pink-theme {
     --container-bg: #6e076e;
     --task-bg: #44093c;
     --input-bg: #8d197e;
-    --accent-color: #ae00ff; /* Laranja forte */
+    --accent-color: #ae00ff;
     --accent-hover-color: #ff00dd;
     --accent-text-color: #df1dd5;
-    --completed-bg: #ac1da0; /* Fundo não muda */
+    --completed-bg: #ac1da0;
     --completed-text-color: #9c4377;
     --button-text-color: #dddddd;
     --button-hover-color: var(--accent-color);
@@ -167,9 +167,10 @@ h1 {
     margin: 0;
     max-height: 50vh;
     overflow-y: auto;
+}
 
-    #taskList li {
-        background: var(--task-bg);
+#taskList li {
+    background: var(--task-bg);
     margin-bottom: 10px;
     padding: 12px 16px;
     border-radius: 8px;
@@ -253,4 +254,4 @@ h1 {
 */
 .task-buttons .delete-btn:hover {
     color: var(--delete-hover-color);
-}}
+}
